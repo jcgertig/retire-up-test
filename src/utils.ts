@@ -11,7 +11,7 @@ export function minAndMaxYearFromReturns(
       if (acc.max === null || year > acc.max) {
         acc.max = year;
       }
-      if (acc.min === null || year > acc.min) {
+      if (acc.min === null || year < acc.min) {
         acc.min = year;
       }
       return acc;
