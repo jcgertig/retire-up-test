@@ -1,6 +1,6 @@
 export interface MinAndMaxYear {
-  max: null | number;
-  min: null | number;
+  max: number;
+  min: number;
 }
 
 export function minAndMaxYearFromReturns(
@@ -8,14 +8,14 @@ export function minAndMaxYearFromReturns(
 ): MinAndMaxYear {
   return returns.reduce<MinAndMaxYear>(
     (acc, { year }) => {
-      if (acc.max === null || year > acc.max) {
+      if (year > acc.max) {
         acc.max = year;
       }
-      if (acc.min === null || year < acc.min) {
+      if (year < acc.min) {
         acc.min = year;
       }
       return acc;
     },
-    { max: null, min: null }
+    { max: Number.NEGATIVE_INFINITY, min: Number.POSITIVE_INFINITY }
   );
 }
