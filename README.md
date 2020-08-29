@@ -1,6 +1,6 @@
 # RetireUp Test
 
-(Live Demo)[https://vigilant-haibt-c3d72d.netlify.app/]
+[Live Demo](https://vigilant-haibt-c3d72d.netlify.app/)
 
 ![Screen Shot](screen-shot.png)
 
