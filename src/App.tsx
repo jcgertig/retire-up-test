@@ -1,7 +1,8 @@
 import './App.css';
 
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { AgGridReact } from 'ag-grid-react';
-import { Slider } from 'antd';
+import { Layout, Popover, Slider } from 'antd';
 import React, { useReducer } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -75,55 +76,97 @@ const App: React.FC<AppProps> = function App({ returns, maxYear, minYear }) {
   }, 200);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <div>
-        <Slider
-          range
-          min={minYear}
-          max={maxYear}
-          onChange={handleChange}
-          defaultValue={[minYear, maxYear]}
-        />
-      </div>
-      <div style={{ flex: 1 }}>
-        <div
-          className="ag-theme-balham"
+    <Layout style={{ height: '100vh' }}>
+      <Layout.Header>
+        <h1
           style={{
-            position: 'relative',
-            width: '100%',
-            height: '100%'
+            color: 'white',
+            textAlign: 'center'
           }}
         >
-          <AgGridReact
-            defaultColDef={{
-              sortable: true,
-              filter: true,
-              resizable: true
+          {state.minYear} - {state.maxYear} Returns
+        </h1>
+      </Layout.Header>
+      <Layout.Content
+        style={{
+          padding: 10,
+          paddingBottom: 15,
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        <div style={{ paddingBottom: 10, position: 'relative' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+              fontSize: 12
             }}
-            columnDefs={[
-              { field: 'year', sort: 'ASC' },
-              {
-                field: 'totalReturn',
-                valueFormatter: ({ value }) =>
-                  parseFloat(value).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })
-              },
-              {
-                field: 'cumulativeReturns',
-                valueFormatter: ({ value }) =>
-                  value.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })
-              }
-            ]}
-            rowData={state.rows}
+          >
+            <span>{minYear}</span>
+            <span>{maxYear}</span>
+          </div>
+          <Slider
+            range
+            min={minYear}
+            max={maxYear}
+            onChange={handleChange}
+            defaultValue={[minYear, maxYear]}
           />
+          <div style={{ position: 'absolute', right: -20, bottom: 15 }}>
+            <Popover content="Change the range to filter to the desired years">
+              <InfoCircleOutlined style={{ cursor: 'help' }} />
+            </Popover>
+          </div>
         </div>
-      </div>
-    </div>
+        <div style={{ flex: 1 }}>
+          <div
+            className="ag-theme-material"
+            style={{
+              position: 'relative',
+              width: '600px',
+              height: '100%'
+            }}
+          >
+            <AgGridReact
+              defaultColDef={{
+                sortable: true,
+                filter: true,
+                resizable: true
+              }}
+              columnDefs={[
+                { field: 'year', sort: 'ASC' },
+                {
+                  field: 'totalReturn',
+                  valueFormatter: ({ value }) =>
+                    parseFloat(value).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }),
+                  cellClassRules: {
+                    'negative-value': ({ value }) => parseFloat(value) < 0
+                  }
+                },
+                {
+                  field: 'cumulativeReturns',
+                  valueFormatter: ({ value }) =>
+                    value.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }),
+                  cellClassRules: {
+                    'negative-value': ({ value }) => value < 0
+                  }
+                }
+              ]}
+              rowData={state.rows}
+            />
+          </div>
+        </div>
+      </Layout.Content>
+    </Layout>
   );
 };
 

@@ -1,0 +1,8 @@
+.negative-value {
+  color: #c0392b;
+}
+
+.ant-slider-rail {
+  background-color: #bdc3c7;
+  transition: background-color linear 0.5s;
+}
