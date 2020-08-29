@@ -84,7 +84,7 @@ const App: React.FC<AppProps> = function App({ returns, maxYear, minYear }) {
             textAlign: 'center'
           }}
         >
-          {state.minYear} - {state.maxYear} Returns
+          S&P 500 {state.minYear} - {state.maxYear} Returns
         </h1>
       </Layout.Header>
       <Layout.Content
